@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuzzFeed India Clone</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="header-container"></div>
+
+  <!-- Hero Section -->
+  <section class="hero container">
+    <article class="hero-article">
+      <img src="https://via.placeholder.com/800x400" alt="Hero Image">
+      <h1>Top Story Headline</h1>
+      <p>Short description for the top story...</p>
+    </article>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+    <section id="news" class="cards-grid">
+      <h2>Latest News</h2>
+      <!-- Repeat .card blocks for each article -->
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="News Image">
+        <h3>News Headline 1</h3>
+        <p>Brief summary of news article 1...</p>
+      </div>
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="News Image">
+        <h3>News Headline 2</h3>
+        <p>Brief summary of news article 2...</p>
+      </div>
+    </section>
+
+    <section id="entertainment" class="cards-grid">
+      <h2>Entertainment</h2>
+      <!-- .card blocks -->
+    </section>
+
+    <section id="lifestyle" class="cards-grid">
+      <h2>Lifestyle</h2>
+      <!-- .card blocks -->
+    </section>
+
+    <section id="trending" class="cards-grid">
+      <h2>Trending</h2>
+      <!-- .card blocks -->
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script>
+    // Include header and footer
+    fetch('header.html')
+      .then(response => response.text())
+      .then(html => document.getElementById('header-container').innerHTML = html);
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(html => document.getElementById('footer-container').innerHTML = html);
+  </script>
+
+</body>
+</html>
