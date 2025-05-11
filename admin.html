@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BuzzStyle Admin Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h1 class="mb-4">🛠️ BuzzStyle Admin Panel</h1>
+
+        <form id="postForm" class="card p-4 mb-4">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Section</label>
+                    <select class="form-select" id="section" required>
+                        <option value="news">News</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="trending">Trending</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" required />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Author</label>
+                    <input type="text" class="form-control" id="author" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Image URL (optional)</label>
+                    <input type="text" class="form-control" id="img" />
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Build Your Post Content</label>
+                    <div class="d-flex gap-2 flex-wrap mb-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="insertTag('<h2>Heading</h2>')">Heading</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="insertTag('<p>Paragraph here...</p>')">Paragraph</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addImage()">Image</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="insertTag('<ul><li>Item 1</li><li>Item 2</li></ul>')">List</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="insertTag('<iframe width=\'100%\' height=\'250\' src=\'https://www.youtube.com/embed/VIDEO_ID\' frameborder=\'0\' allowfullscreen></iframe>')">YouTube</button>
+                    </div>
+                    <textarea class="form-control" id="summary" rows="10" placeholder="HTML content here..."></textarea>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary">Add Post</button>
+                </div>
+            </div>
+        </form>
+
+        <input id="searchInput" class="form-control mb-4" placeholder="Search by title..." />
+        <div id="postList"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAlZ-SH4nDVopbizdg_h4NLcI161GNJ9ik",
+            authDomain: "blogs-d2e15.firebaseapp.com",
+            databaseURL: "https://blogs-d2e15-default-rtdb.firebaseio.com",
+            projectId: "blogs-d2e15",
+            storageBucket: "blogs-d2e15.appspot.com",
+            messagingSenderId: "644745190816",
+            appId: "1:644745190816:web:506c42478d9a0e060818c5",
+            measurementId: "G-X4ERSBEV0J"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const postForm = document.getElementById("postForm");
+        const postList = document.getElementById("postList");
+
+        // Function to insert HTML tags into the textarea
+        window.insertTag = function(tag) {
+            const textarea = document.getElementById("summary");
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.slice(0, start) + tag + text.slice(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + tag.length, start + tag.length);
+        }
+
+        // Function to add an image
+        window.addImage = function() {
+            const url = prompt("Paste image URL:");
+            if (url) {
+                insertTag(`<img src="${url}" style="width:100%;margin-bottom:10px;border-radius:8px;">`);
+            }
+        }
+
+        // Function to edit a post
+        window.editPost = function(section, key) {
+            const dbRef = ref(db, `${section}/${key}`);
+            onValue(dbRef, snapshot => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById("section").value = section;
+                    document.getElementById("title").value = data.title;
+                    document.getElementById("author").value = data.author;
+                    document.getElementById("date").value = data.date;
+                    document.getElementById("img").value = data.img;
+                    document.getElementById("summary").value = data.summary;
+                    remove(dbRef);
+                    alert("Now edit and submit to update.");
+                }
+            }, { onlyOnce: true });
+        }
+
+        // Function to delete a post
+        window.deletePost = function(section, key) {
+            if (confirm("Delete this post?")) {
+                remove(ref(db, `${section}/${key}`)).then(loadPosts);
+            }
+        }
+
+        // Search functionality
+        document.getElementById("searchInput").addEventListener("input", e => {
+            const q = e.target.value.toLowerCase();
+            document.querySelectorAll(".post-card").forEach(card => {
+                card.style.display = card.dataset.title.includes(q) ? "" : "none";
+            });
+        });
+
+        // Handle form submission
+        postForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const section = document.getElementById("section").value;
+            const title = document.getElementById("title").value;
+            const author = document.getElementById("author").value;
+            const date = document.getElementById("date").value;
+            const img = document.getElementById("img").value;
+            const summary = document.getElementById("summary").value;
+            const newPostRef = push(ref(db, section));
+            set(newPostRef, { title, author, date, img, summary }).then(() => {
+                alert("Post added!");
+                postForm.reset();
+                loadPosts();
+            });
+        });
+
+        // Load posts from Firebase
+        function loadPosts() {
+            postList.innerHTML = "";
+            ["news", "entertainment", "lifestyle", "trending"].forEach(section => {
+                const sectionDiv = document.createElement("div");
+                sectionDiv.innerHTML = `<h4>${section.toUpperCase()}</h4>`;
+                onValue(ref(db, section), snapshot => {
+                    sectionDiv.innerHTML = `<h4>${section.toUpperCase()}</h4>`;
+                    const data = snapshot.val();
+                    if (data) {
+                        Object.entries(data).forEach(([key, post]) => {
+                            const card = document.createElement("div");
+                            card.className = "card mb-3 post-card";
+                            card.dataset.title = (post.title || "").toLowerCase();
+                            card.innerHTML = `
+                                <div class="card-body">
+                                    <h5>${post.title}</h5>
+                                    <p><small>${post.author || ""} • ${post.date || ""}</small></p>
+                                    ${post.img ? `<img src="${post.img}" class="img-fluid mb-2">` : ""}
+                                    <div>${post.summary}</div>
+                                    <div class="text-end mt-2">
+                                        <button class="btn btn-warning btn-sm me-2" onclick="editPost('${section}','${key}')">Edit</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deletePost('${section}','${key}')">Delete</button>
+                                    </div>
+                                </div>`;
+                            sectionDiv.appendChild(card);
+                        });
+                    }
+                });
+                postList.appendChild(sectionDiv);
+            });
+        }
+
+        window.onload = loadPosts;
+    </script>
+</body>
+</html>
