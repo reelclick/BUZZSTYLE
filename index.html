@@ -22,6 +22,8 @@
             --primary-color: #ee2a24;
             --text-color: #333;
             --bg-color: #f9f9f9;
+            --bg-color-dark: #222;
+            --text-color-dark: #fff;
             --font-base: 16px;
         }
         /* Reset & Base */
@@ -70,28 +72,28 @@
         }
         .modal-content {
             background-color: #fefefe; 
-            margin: 5% auto; /* Adjust margin for better centering */
+            margin: 5% auto; 
             padding: 20px; 
             border: 1px solid #888; 
-            width: 90%; /* Increase width for larger size */
-            max-width: 800px; /* Set a max width for larger screens */
-            max-height: 90%; /* Allow more height */
-            overflow-y: hidden; /* Disable outer scrolling */
-            position: relative; /* For positioning close button */
+            width: 90%; 
+            max-width: 800px; 
+            max-height: 90%; 
+            overflow-y: hidden; 
+            position: relative; 
         }
         .modal-body {
-            max-height: 80vh; /* Increased height for body */
-            overflow-y: auto; /* Enable scrolling within modal body */
-            padding-top: 40px; /* Space for close button */
+            max-height: 80vh; 
+            overflow-y: auto; 
+            padding-top: 40px; 
         }
         .close {
             color: #aaa; 
-            position: absolute; /* Fixed position */
+            position: absolute; 
             top: 10px; 
             right: 20px; 
             font-size: 28px; 
             font-weight: bold; 
-            z-index: 1001; /* Ensure close button is above content */
+            z-index: 1001; 
         }
         .close:hover,
         .close:focus {
@@ -123,7 +125,7 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
-        <button id="langToggle">EN/HI</button>
+        <button id="langToggle">EN</button>
         <button id="themeToggle">🌙</button>
     </div>
     <div class="search-bar"><input id="searchInput" placeholder="Search articles..." type="text"/></div>
@@ -141,7 +143,6 @@
         <div class="cards-wrapper" id="newsWrapper"></div>
         <button class="load-more" data-section="news">Load More</button>
     </section>
-    <!-- Other Sections -->
     <section class="cards-grid" id="entertainment">
         <h2>Entertainment</h2>
         <div class="cards-wrapper" id="entWrapper"></div>
@@ -191,7 +192,7 @@
             <small id="modalAuthor"></small>
             <img id="modalImage" alt="Article Image" style="width:100%; height:auto; margin:10px 0;"/>
             <p id="modalSummary"></p>
-            <p id="modalFullContent"></p>
+            <div id="modalFullContent"></div>
         </div>
     </div>
 </div>
@@ -227,7 +228,7 @@ sections.forEach(section => {
 
     // Fetch data from Firebase
     function fetchArticles() {
-        const dbRef = ref(db, 'articles/' + section);
+        const dbRef = ref(db, section); // Directly reference the section
         get(dbRef).then(snapshot => {
             if (snapshot.exists()) {
                 const articles = snapshot.val();
@@ -237,10 +238,10 @@ sections.forEach(section => {
                 // Display only new articles
                 displayArticles(articleArray);
             } else {
-                console.log("No data available");
+                console.log("No data available for section:", section);
             }
         }).catch(error => {
-            console.error("Error fetching data: ", error);
+            console.error("Error fetching data from Firebase: ", error);
         });
     }
 
@@ -248,11 +249,15 @@ sections.forEach(section => {
         // Filter out already loaded articles
         const newArticles = articles.filter(article => !loadedArticles[section].includes(article.title));
 
+        if (newArticles.length === 0) {
+            console.log("No new articles to display for section:", section);
+        }
+
         newArticles.forEach(article => {
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <img src="${article.img}" alt="${article.title}"/>
+                <img src="${article.img}" alt="${article.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300';"/>
                 <div class="card-content">
                     <h3>${article.title}</h3>
                 </div>
@@ -288,8 +293,8 @@ sections.forEach(section => {
         modalTitle.textContent = article.title;
         modalAuthor.textContent = `By ${article.author} on ${article.date}`;
         modalImage.src = article.img;  // Set the image source
-        modalSummary.textContent = article.summary;  // Set the summary
-        modalFullContent.textContent = article.fullContent;  // Set the full content
+        modalSummary.innerHTML = article.summary;  // Set the summary as HTML
+        modalFullContent.innerHTML = article.fullContent;  // Set the full content as HTML
 
         // Disable background scroll
         document.body.style.overflow = 'hidden';
@@ -314,6 +319,27 @@ sections.forEach(section => {
 
     // Initial fetch
     fetchArticles();
+});
+
+// Language toggle functionality
+const langToggle = document.getElementById('langToggle');
+let isEnglish = true;
+
+langToggle.addEventListener('click', () => {
+    isEnglish = !isEnglish;
+    langToggle.textContent = isEnglish ? 'EN' : 'HI';
+    // You can add logic here to change the content language if needed
+});
+
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+let isDarkMode = false;
+
+themeToggle.addEventListener('click', () => {
+    isDarkMode = !isDarkMode;
+    document.body.style.backgroundColor = isDarkMode ? 'var(--bg-color-dark)' : 'var(--bg-color)';
+    document.body.style.color = isDarkMode ? 'var(--text-color-dark)' : 'var(--text-color)';
+    themeToggle.textContent = isDarkMode ? '🌞' : '🌙';
 });
 
 // Close modal when clicking outside of it
