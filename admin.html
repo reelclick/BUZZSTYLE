@@ -79,6 +79,7 @@
 
         const postForm = document.getElementById("postForm");
         const postList = document.getElementById("postList");
+        let editingPostKey = null; // Variable to store the key of the post being edited
 
         // Function to insert HTML tags into the textarea
         window.insertTag = function(tag) {
@@ -111,7 +112,7 @@
                     document.getElementById("date").value = data.date;
                     document.getElementById("img").value = data.img;
                     document.getElementById("summary").value = data.summary;
-                    remove(dbRef);
+                    editingPostKey = key; // Store the key for updating later
                     alert("Now edit and submit to update.");
                 }
             }, { onlyOnce: true });
@@ -141,12 +142,31 @@
             const date = document.getElementById("date").value;
             const img = document.getElementById("img").value;
             const summary = document.getElementById("summary").value;
-            const newPostRef = push(ref(db, section));
-            set(newPostRef, { title, author, date, img, summary }).then(() => {
-                alert("Post added!");
-                postForm.reset();
-                loadPosts();
-            });
+
+            // Check if we are editing an existing post
+            if (editingPostKey) {
+                // Update the existing post
+                set(ref(db, `${section}/${editingPostKey}`), { title, author, date, img, summary }).then(() => {
+                    alert("Post updated!");
+                    postForm.reset();
+                    editingPostKey = null; // Reset editingPostKey
+                    loadPosts();
+                }).catch(error => {
+                    console.error("Error updating post:", error);
+                    alert("Failed to update post. Please try again.");
+                });
+            } else {
+                // Add a new post
+                const newPostRef = push(ref(db, section));
+                set(newPostRef, { title, author, date, img, summary }).then(() => {
+                    alert("Post added!");
+                    postForm.reset();
+                    loadPosts();
+                }).catch(error => {
+                    console.error("Error adding post:", error);
+                    alert("Failed to add post. Please try again.");
+                });
+            }
         });
 
         // Load posts from Firebase
@@ -176,6 +196,8 @@
                                 </div>`;
                             sectionDiv.appendChild(card);
                         });
+                    } else {
+                        sectionDiv.innerHTML += `<p>No posts available.</p>`;
                     }
                 });
                 postList.appendChild(sectionDiv);
