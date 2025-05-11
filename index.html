@@ -1,265 +1,430 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>BuzzFeed India Clone</title>
-<!-- SEO & Social -->
-<meta content="Latest news, entertainment, lifestyle and trending stories from India." name="description"/>
-<meta content="news, India, entertainment, lifestyle, trending" name="keywords"/>
-<meta content="BuzzFeed India" property="og:title"/>
-<meta content="Latest news, entertainment, lifestyle and trending stories from India." property="og:description"/>
-<link href="favicon.ico" rel="icon"/>
-<link href="feed.xml" rel="alternate" type="application/rss+xml"/>
-<link href="manifest.json" rel="manifest"/>
-<link href="icons/icon-192.png" rel="apple-touch-icon"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
-<!-- Inline CSS -->
-<style>:root {
-      --primary-color: #ee2a24;
-      --text-color: #333;
-      --bg-color: #f9f9f9;
-      --font-base: 16px;}
-/* Reset & Base */
-    * { margin:0; padding:0; box-sizing:border-box;}
-html { font-size: var(--font-base); scroll-behavior: smooth;}
-body { font-family:'Roboto',sans-serif; line-height:1.6; color: var(--text-color); background: var(--bg-color); transition: background .3s,color .3s;}
-a { text-decoration:none;}
-.container { width:90%; max-width:1200px; margin:0 auto;}
-img { display:block; width:100%; height:auto;}
-/* Cookie Banner */
-    #cookieBanner { position:fixed; bottom:0; width:100%; background:#222; color:#fff; padding:10px; text-align:center; display:none; z-index:1000;}
-#cookieBanner button { margin-left:10px; padding:5px 10px;}
-/* Header & Nav */
-    header.site-header { background: var(--primary-color); color:#fff; position:sticky; top:0; z-index:100;}
-header .container { display:flex; align-items:center; justify-content:space-between; padding:10px 0;}
-.logo { font-size:1.8rem; font-weight:700;}
-nav ul { list-style:none; display:flex; gap:1rem;}
-nav li a { color:#fff; font-weight:500; position:relative;}
-nav li a::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#ffdede; transition:width .3s;}
-nav li a:hover::after { width:100%;}
-.menu-toggle { display:none; cursor:pointer; font-size:1.5rem;}
-@media(max-width:768px) {
-      nav { display:none; position:absolute; top:60px; left:0; width:100%; background: var(--primary-color);}
-nav ul { flex-direction:column; padding:1rem 0;}
-.menu-toggle { display:block;}
-/* Navbar Buttons */
-    #langToggle, #themeToggle { background:none; border:1px solid #fff; color:#fff; padding:5px 10px; cursor:pointer; border-radius:4px; font-size:1rem; margin-left:0.5rem;}
-/* Search Bar */
-    .search-bar { margin:10px 0; text-align:center;}
-.search-bar input { width:80%; max-width:400px; padding:8px; border:1px solid #ccc; border-radius:4px;}
-/* Sections */
-    section.cards-grid { margin:2rem 0;}
-section.cards-grid h2 { margin-bottom:1rem; color: var(--primary-color); font-size:1.5rem;}
-.cards-wrapper { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem;}
-.card { background:#fff; border:1px solid #ddd; border-radius:5px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:transform .2s;}
-.card:hover { transform:translateY(-5px);}
-.card-content { padding:1rem;}
-.card-content h3 { margin-bottom:0.5rem; font-size:1.2rem;}
-.card-content small { display:block; margin-bottom:0.75rem; color:#777;}
-/* Load More & Subscription */
-    .load-more, .subscribe-form button { background: var(--primary-color); color:#fff; border:none; border-radius:4px; cursor:pointer; transition:opacity .3s;}
-.load-more:hover, .subscribe-form button:hover { opacity:0.8;}
-.subscribe-form { background:#fff; padding:2rem; border:1px solid #ddd; border-radius:5px; margin:2rem auto; max-width:400px; text-align:center;}
-.subscribe-form input { width:100%; padding:0.75rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:4px;}
-/* Back to Top */
-    #backToTop { position:fixed; bottom:20px; right:20px; padding:10px; background: var(--primary-color); color:#fff; border:none; border-radius:50%; cursor:pointer; opacity:0; transition:opacity .3s;}
-#backToTop.show { opacity:1;}
-/* Dark Mode */
-    .dark-mode { background:#222; color:#ddd;}
-.dark-mode header { background:#111;}
-.dark-mode .card { background:#333; border-color:#444;}
-.dark-mode footer { background:#111;}
-/* Footer */
-    footer.site-footer { background:#333; color:#ccc; text-align:center; padding:1rem 0; display:flex; flex-direction:column; gap:0.5rem;}
-footer .social-icons { display:flex; gap:0.5rem;}
-footer .social-icons a { color:#ccc; font-size:1.2rem;}
-/* Comments */
-    #comments { margin:2rem 0;}
-
-/* Hero Carousel */
-.hero {
-  position: relative;
-  width: 100%;
-  height: 350px;
-  overflow: hidden;
-}
-.hero img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: none;
-}
-.hero img.active {
-  display: block;
-}
-</style>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BuzzFeed India Clone</title>
+    <!-- SEO & Social -->
+    <meta content="Latest news, entertainment, lifestyle and trending stories from India." name="description"/>
+    <meta content="news, India, entertainment, lifestyle, trending" name="keywords"/>
+    <meta content="BuzzFeed India" property="og:title"/>
+    <meta content="Latest news, entertainment, lifestyle and trending stories from India." property="og:description"/>
+    <link href="favicon.ico" rel="icon"/>
+    <link href="feed.xml" rel="alternate" type="application/rss+xml"/>
+    <link href="manifest.json" rel="manifest"/>
+    <link href="icons/icon-192.png" rel="apple-touch-icon"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <!-- Inline CSS -->
+    <style>
+        :root {
+            --primary-color: #ee2a24;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --font-base: 16px;
+        }
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: var(--font-base);
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            transition: background .3s, color .3s;
+        }
+        a {
+            text-decoration: none;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        /* Cookie Banner */
+        #cookieBanner {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #222;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+        #cookieBanner button {
+            margin-left: 10px;
+            padding: 5px 10px;
+        }
+        /* Header & Nav */
+        header.site-header {
+            background: var(--primary-color);
+            color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+        nav li a {
+            color: #fff;
+            font-weight: 500;
+            position: relative;
+        }
+        nav li a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 2px;
+            background: #ffdede;
+            transition: width .3s;
+        }
+        nav li a:hover::after {
+            width: 100%;
+        }
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        @media(max-width: 768px) {
+            nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--primary-color);
+            }
+            nav ul {
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            /* Navbar Buttons */
+            #langToggle, #themeToggle {
+                background: none;
+                border: 1px solid #fff;
+                color: #fff;
+                padding: 5px 10px;
+                cursor: pointer;
+                border-radius: 4px;
+                font-size: 1rem;
+                margin-left: 0.5rem;
+            }
+        }
+        /* Search Bar */
+        .search-bar {
+            margin: 10px 0;
+            text-align: center;
+        }
+        .search-bar input {
+            width: 80%;
+            max-width: 400px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        /* Sections */
+        section.cards-grid {
+            margin: 2rem 0;
+        }
+        section.cards-grid h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .cards-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform .2s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-content {
+            padding: 1rem;
+        }
+        .card-content h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        /* Load More & Subscription */
+        .load-more, .subscribe-form button {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity .3s;
+        }
+        .load-more:hover, .subscribe-form button:hover {
+            opacity: 0.8;
+        }
+        .subscribe-form {
+            background: #fff;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 2rem auto;
+            max-width: 400px;
+            text-align: center;
+        }
+        .subscribe-form input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        /* Back to Top */
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+        #backToTop.show {
+            opacity: 1;
+        }
+        /* Dark Mode */
+        .dark-mode {
+            background: #222;
+            color: #ddd;
+        }
+        .dark-mode header {
+            background: #111;
+        }
+        .dark-mode .card {
+            background: #333;
+            border-color: #444;
+        }
+        .dark-mode footer {
+            background: #111;
+        }
+        /* Footer */
+        footer.site-footer {
+            background: #333;
+            color: #ccc;
+            text-align: center;
+            padding: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        footer .social-icons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        footer .social-icons a {
+            color: #ccc;
+            font-size: 1.2rem;
+        }
+        /* Comments */
+        #comments {
+            margin: 2rem 0;
+        }
+        /* Hero Carousel */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+        }
+        .hero img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: none;
+        }
+        .hero img.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <!-- Cookie Banner -->
 <div id="cookieBanner">This site uses cookies. <button onclick="acceptCookies()">Accept</button></div>
 <!-- Header -->
 <header class="site-header">
-<div class="container">
-<span class="logo">BuzzFeed India</span>
-<span class="menu-toggle">☰</span>
-<nav>
-<ul>
-<li><a href="#news">News</a></li>
-<li><a href="#entertainment">Entertainment</a></li>
-<li><a href="#lifestyle">Lifestyle</a></li>
-<li><a href="#trending">Trending</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
-</nav>
-<button id="langToggle">EN/HI</button>
-<button id="themeToggle">🌓</button>
-</div>
-<div class="search-bar"><input id="searchInput" placeholder="Search articles..." type="text"/></div>
+    <div class="container">
+        <span class="logo">BuzzFeed India</span>
+        <span class="menu-toggle">☰</span>
+        <nav>
+            <ul>
+                <li><a href="#news">News</a></li>
+                <li><a href="#entertainment">Entertainment</a></li>
+                <li><a href="#lifestyle">Lifestyle</a></li>
+                <li><a href="#trending">Trending</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <button id="langToggle">EN/HI</button>
+        <button id="themeToggle">🌙</button>
+    </div>
+    <div class="search-bar"><input id="searchInput" placeholder="Search articles..." type="text"/></div>
 </header>
 <!-- Hero Carousel -->
 <section class="hero">
-<img alt="Hero 1" class="active" src="images/hero1.jpg"/>
-<img alt="Hero 2" src="images/hero2.jpg"/>
-<img alt="Hero 3" src="images/hero3.jpg"/>
-<div class="overlay container">
-<h1 id="heroTitle">Top Story Headline</h1>
-<p id="heroDesc">Short description for the top story...</p>
-</div>
+    <img alt="Hero 1" class="active" src="images/hero1.jpg"/>
+    <img alt="Hero 2" src="images/hero2.jpg"/>
+    <img alt="Hero 3" src="images/hero3.jpg"/>
+    <div class="overlay container">
+        <h1 id="heroTitle">Top Story Headline</h1>
+        <p id="heroDesc">Short description for the top story...</p>
+    </div>
 </section>
 <main class="container">
-<!-- Sections loaded from Firebase Realtime Database -->
-<section class="cards-grid" id="news">
-<h2>Latest News</h2>
-<div class="cards-wrapper" id="newsWrapper"></div>
-<button class="load-more" data-section="news">Load More</button>
-</section>
-<section class="cards-grid" id="entertainment">
-<h2>Entertainment</h2>
-<div class="cards-wrapper" id="entWrapper"></div>
-<button class="load-more" data-section="entertainment">Load More</button>
-</section>
-<section class="cards-grid" id="lifestyle">
-<h2>Lifestyle</h2>
-<div class="cards-wrapper" id="lifeWrapper"></div>
-<button class="load-more" data-section="lifestyle">Load More</button>
-</section>
-<section class="cards-grid" id="trending">
-<h2>Trending</h2>
-<div class="cards-wrapper" id="trendWrapper"></div>
-<button class="load-more" data-section="trending">Load More</button>
-</section>
-<!-- Subscription Form -->
-<div class="subscribe-form">
-<h3>Subscribe for Updates</h3>
-<input placeholder="Your email" required="" type="email"/>
-<button>Subscribe</button>
-</div>
-<!-- Comments (Disqus) -->
-<div id="comments">
-<h2>Comments</h2>
-<div id="disqus_thread"></div>
-</div>
+    <!-- Sections loaded from Firebase Realtime Database -->
+    <section class="cards-grid" id="news">
+        <h2>Latest News</h2>
+        <div class="cards-wrapper" id="newsWrapper"></div>
+        <button class="load-more" data-section="news">Load More</button>
+    </section>
+    <section class="cards-grid" id="entertainment">
+        <h2>Entertainment</h2>
+        <div class="cards-wrapper" id="entWrapper"></div>
+        <button class="load-more" data-section="entertainment">Load More</button>
+    </section>
+    <section class="cards-grid" id="lifestyle">
+        <h2>Lifestyle</h2>
+        <div class="cards-wrapper" id="lifeWrapper"></div>
+        <button class="load-more" data-section="lifestyle">Load More</button>
+    </section>
+    <section class="cards-grid" id="trending">
+        <h2>Trending</h2>
+        <div class="cards-wrapper" id="trendWrapper"></div>
+        <button class="load-more" data-section="trending">Load More</button>
+    </section>
+    <!-- Subscription Form -->
+    <div class="subscribe-form">
+        <h3>Subscribe for Updates</h3>
+        <input placeholder="Your email" required="" type="email"/>
+        <button>Subscribe</button>
+    </div>
+    <!-- Comments (Disqus) -->
+    <div id="comments">
+        <h2>Comments</h2>
+        <div id="disqus_thread"></div>
+    </div>
 </main>
 <!-- Back to Top -->
 <button id="backToTop">↑</button>
 <!-- Footer -->
 <footer class="site-footer">
-<div class="social-icons">
-<a href="#">🐦</a>
-<a href="#">📘</a>
-<a href="#">📸</a>
-</div>
-<p>© 2025 BuzzFeed India Clone.</p>
-<a href="sitemap.xml">Sitemap</a>
+    <div class="social-icons">
+        <a href="#">🐦</a>
+        <a href="#">📖</a>
+        <a href="#">📱</a>
+    </div>
+    <p>© 2025 BuzzFeed India Clone.</p>
+    <a href="sitemap.xml">Sitemap</a>
 </footer>
 <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js"></script>
-<script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAlZ-SH4nDVopbizdg_h4NLcI161GNJ9ik",
-      authDomain: "blogs-d2e15.firebaseapp.com",
-      databaseURL: "https://blogs-d2e15-default-rtdb.firebaseio.com",
-      projectId: "blogs-d2e15",
-      storageBucket: "blogs-d2e15.appspot.com",
-      messagingSenderId: "644745190816",
-      appId: "1:644745190816:web:506c42478d9a0e060818c5",
-      measurementId: "G-X4ERSBEV0J"
-    };
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-    const db = firebase.database();
-
-    // Load content from Firebase (single top-level)
-    db.ref().once('value').then(snapshot => {
-      const allData = snapshot.val() || {};
-      sections.forEach(sec => {
-        let offset = 0;
-        const data = Object.values(allData[sec] || {});
-        const wrapper = document.getElementById(sec + 'Wrapper');
-        const btn = document.querySelector(`.load-more[data-section="${sec}"]`);
-        function load() {
-          data.slice(offset, offset + 6).forEach(item => {
-            const card = document.createElement('div'); card.className = 'card';
-            card.innerHTML = `<img src="${item.img}" alt=""><div class="card-content"><h3>${item.title}</h3><small>By ${item.author} • ${item.date}</small><p>${item.summary}</p></div>`;
-            wrapper.appendChild(card);
-          });
-          offset += 6;
-          if (offset >= data.length) btn.style.display = 'none';
-        }
-        load();
-        btn.onclick = load;
-      });
-    });
-        function load() {
-          data.slice(offset, offset+6).forEach(item => {
-            const card = document.createElement('div'); card.className = 'card';
-            card.innerHTML = `<img src="${item.img}" alt=""><div class="card-content"><h3>${item.title}</h3><small>By ${item.author} • ${item.date}</small><p>${item.summary}</p></div>`;
-            wrapper.appendChild(card);
-          }); offset += 6;
-          if(offset >= data.length) btn.style.display = 'none';
-        }
-        load();
-        btn.onclick = load;
-      });
-    });
-
-    // Rest of JS: carousel, menu, theme, search, back-to-top, comments, SW
-    // ... (unchanged) ...
-  </script>
 <!-- Disqus embed -->
-<script>
-    var disqus_config = function () { this.page.url = location.href; this.page.identifier = location.pathname; };
-    (function(){ var d=document, s=d.createElement('script'); s.src='https://your-disqus-shortname.disqus.com/embed.js'; s.setAttribute('data-timestamp',+new Date()); (d.head||d.body).appendChild(s); })();
-  </script>
-</body>
-</html>
-<!-- File: about.html -->
-<!DOCTYPE html>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+import { getDatabase, ref, child, get } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js';
 
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<title>About</title>
-<link href="index.html" rel="stylesheet"/>
-</head>
-<body>
-<header><a href="index.html">← Home</a></header>
-<main>
-<h1>About BuzzFeed India Clone</h1>
-<p>यह एक उदाहरण न्यूज़ वेबसाइट है जिसे Firebase और PWA फीचर्स के साथ बनाया गया है।</p>
-</main>
+const firebaseConfig = {
+  apiKey: "AIzaSyAlZ-SH4nDVopbizdg_h4NLcI161GNJ9ik",
+  authDomain: "blogs-d2e15.firebaseapp.com",
+  databaseURL: "https://blogs-d2e15-default-rtdb.firebaseio.com",
+  projectId: "blogs-d2e15",
+  storageBucket: "blogs-d2e15.appspot.com",
+  messagingSenderId: "644745190816",
+  appId: "1:644745190816:web:506c42478d9a0e060818c5",
+  measurementId: "G-X4ERSBEV0J"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const sections = ["news", "entertainment", "lifestyle", "trending"];
+
+sections.forEach(section => {
+  const wrapper = document.getElementById(section + 'Wrapper');
+  const btn = document.querySelector(`.load-more[data-section="${section}"]`);
+  let offset = 0;
+
+  get(child(ref(db), section)).then(snapshot => {
+    if (snapshot.exists()) {
+      const data = Object.values(snapshot.val() || {});
+      function load() {
+        data.slice(offset, offset + 6).forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <div class="card-content">
+              ${item.image ? `<img src="${item.image}" alt="${item.title}" />` : ''}
+              ${item.title ? `<h3>${item.title}</h3>` : ''}
+            </div>`;
+          card.onclick = () => {
+            // Redirect to the article page or open a modal with full content
+            window.location.href = `article.html?id=${item.id}`; // Assuming each article has a unique ID
+          };
+          wrapper.appendChild(card);
+        });
+        offset += 6;
+        if (offset >= data.length) btn.style.display = 'none';
+      }
+      load();
+      btn.onclick = load;
+    }
+  });
+});
+</script>
 </body>
 </html>
