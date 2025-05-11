@@ -1,0 +1,10 @@
+[
+  {
+    "img": "images/news1.jpg",
+    "title": "News Headline 1",
+    "author": "Author Name",
+    "date": "2025-05-11",
+    "summary": "Brief summary of news article 1..."
+  }
+  // …more items
+]
