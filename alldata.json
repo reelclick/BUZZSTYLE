@@ -1,0 +1,45 @@
+{
+  "news": {
+    "item1": {
+      "title": "पहला न्यूज़ हेडलाइन",
+      "author": "Author Name",
+      "date": "2025-05-11",
+      "img": "images/news1.jpg",
+      "summary": "यह पहला न्यूज़ आर्टिकल है..."
+    },
+    "item2": {
+      "title": "दूसरा न्यूज़ हेडलाइन",
+      "author": "Author Two",
+      "date": "2025-05-10",
+      "img": "images/news2.jpg",
+      "summary": "यह दूसरा न्यूज़ आर्टिकल है..."
+    }
+  },
+  "entertainment": {
+    "item1": {
+      "title": "इंटरटेनमेंट हेडलाइन 1",
+      "author": "Entertainment Author",
+      "date": "2025-05-09",
+      "img": "images/ent1.jpg",
+      "summary": "यह इंटरटेनमेंट से जुड़ा पहला आर्टिकल है..."
+    }
+  },
+  "lifestyle": {
+    "item1": {
+      "title": "LIFESTYLE हेडलाइन 1",
+      "author": "Lifestyle Author",
+      "date": "2025-05-08",
+      "img": "images/life1.jpg",
+      "summary": "यह लाइफस्टाइल से जुड़ा पहला आर्टिकल है..."
+    }
+  },
+  "trending": {
+    "item1": {
+      "title": "Trending हेडलाइन 1",
+      "author": "Trend Author",
+      "date": "2025-05-07",
+      "img": "images/trend1.jpg",
+      "summary": "यह ट्रेंडिंग से जुड़ा पहला आर्टिकल है..."
+    }
+  }
+}
