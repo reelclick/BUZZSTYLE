@@ -52,14 +52,41 @@
         section.cards-grid { margin:2rem 0; }
         section.cards-grid h2 { margin-bottom:1rem; color: var(--primary-color); font-size:1.5rem; }
         .cards-wrapper { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
-        .card { background:#fff; border:1px solid #ddd; border-radius:5px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:transform .2s; }
+        .card { background:#fff; border:1px solid #ddd; border-radius:5px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:transform .2s; cursor: pointer; }
         .card:hover { transform:translateY(-5px); }
         .card-content { padding:1rem; }
         .card-content h3 { margin-bottom:0.5rem; font-size:1.2rem; }
-        .card-content small { display:block; margin-bottom:0.75rem; color:#777; }
-        /* Toggle Content */
-        .toggle-content { display: none; }
-        .toggle-button { cursor: pointer; background: var(--primary-color); color: white; border: none; padding: 10px; border-radius: 5px; }
+        /* Modal Styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+        }
+        .modal-content {
+            background-color: #fefefe; 
+            margin: 15% auto; 
+            padding: 20px; 
+            border: 1px solid #888; 
+            width: 80%; 
+        }
+        .close {
+            color: #aaa; 
+            float: right; 
+            font-size: 28px; 
+            font-weight: bold; 
+        }
+        .close:hover,
+        .close:focus {
+            color: black; 
+            text-decoration: none; 
+            cursor: pointer; 
+        }
         /* Footer */
         footer.site-footer { background:#333; color:#ccc; text-align:center; padding:1rem 0; display:flex; flex-direction:column; gap:0.5rem; }
         footer .social-icons { display:flex; gap:0.5rem; }
@@ -146,6 +173,19 @@
     <p>© 2025 BuzzFeed India Clone.</p>
     <a href="sitemap.xml">Sitemap</a>
 </footer>
+
+<!-- Modal for Full Article -->
+<div id="articleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <small id="modalAuthor"></small>
+        <img id="modalImage" alt="Article Image" style="width:100%; height:auto; margin:10px 0;"/>
+        <p id="modalSummary"></p>
+        <p id="modalFullContent"></p>
+    </div>
+</div>
+
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
@@ -196,14 +236,43 @@ sections.forEach(section => {
                 <img src="${article.img}" alt="${article.title}"/>
                 <div class="card-content">
                     <h3>${article.title}</h3>
-                    <small>By ${article.author} on ${article.date}</small>
-                    <p>${article.summary}</p>
                 </div>
             `;
             wrapper.appendChild(card);
+
+            // Add click event to the entire card
+            card.addEventListener('click', () => {
+                openModal(article);
+            });
         });
     }
 
+    // Open modal with article content
+    function openModal(article) {
+        const modal = document.getElementById('articleModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalAuthor = document.getElementById('modalAuthor');
+        const modalImage = document.getElementById('modalImage');
+        const modalSummary = document.getElementById('modalSummary');
+        const modalFullContent = document.getElementById('modalFullContent');
+
+        modalTitle.textContent = article.title;
+        modalAuthor.textContent = `By ${article.author} on ${article.date}`;
+        modalImage.src = article.img;  // Set the image source
+        modalSummary.textContent = article.summary;  // Set the summary
+        modalFullContent.textContent = article.fullContent;  // Set the full content
+
+        modal.style.display = "block";
+    }
+
+    // Close modal
+    const closeModal = document.getElementById('closeModal');
+    closeModal.onclick = function() {
+        const modal = document.getElementById('articleModal');
+        modal.style.display = "none";
+    }
+
+    // Fetch articles on load
     btn.addEventListener('click', () => {
         fetchArticles();
     });
@@ -211,6 +280,14 @@ sections.forEach(section => {
     // Initial fetch
     fetchArticles();
 });
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('articleModal');
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
 </script>
 </body>
 </html>
