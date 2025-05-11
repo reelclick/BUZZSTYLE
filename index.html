@@ -70,16 +70,28 @@
         }
         .modal-content {
             background-color: #fefefe; 
-            margin: 15% auto; 
+            margin: 5% auto; /* Adjust margin for better centering */
             padding: 20px; 
             border: 1px solid #888; 
-            width: 80%; 
+            width: 90%; /* Increase width for larger size */
+            max-width: 800px; /* Set a max width for larger screens */
+            max-height: 90%; /* Allow more height */
+            overflow-y: hidden; /* Disable outer scrolling */
+            position: relative; /* For positioning close button */
+        }
+        .modal-body {
+            max-height: 80vh; /* Increased height for body */
+            overflow-y: auto; /* Enable scrolling within modal body */
+            padding-top: 40px; /* Space for close button */
         }
         .close {
             color: #aaa; 
-            float: right; 
+            position: absolute; /* Fixed position */
+            top: 10px; 
+            right: 20px; 
             font-size: 28px; 
             font-weight: bold; 
+            z-index: 1001; /* Ensure close button is above content */
         }
         .close:hover,
         .close:focus {
@@ -121,10 +133,6 @@
     <img alt="Hero 1" class="active" src="images/hero1.jpg"/>
     <img alt="Hero 2" src="images/hero2.jpg"/>
     <img alt="Hero 3" src="images/hero3.jpg"/>
-    <div class="overlay container">
-        <h1 id="heroTitle">Top Story Headline</h1>
-        <p id="heroDesc">Short description for the top story...</p>
-    </div>
 </section>
 <main class="container">
     <!-- Sections loaded from Firebase Realtime Database -->
@@ -178,11 +186,13 @@
 <div id="articleModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeModal">&times;</span>
-        <h2 id="modalTitle"></h2>
-        <small id="modalAuthor"></small>
-        <img id="modalImage" alt="Article Image" style="width:100%; height:auto; margin:10px 0;"/>
-        <p id="modalSummary"></p>
-        <p id="modalFullContent"></p>
+        <div class="modal-body">
+            <h2 id="modalTitle"></h2>
+            <small id="modalAuthor"></small>
+            <img id="modalImage" alt="Article Image" style="width:100%; height:auto; margin:10px 0;"/>
+            <p id="modalSummary"></p>
+            <p id="modalFullContent"></p>
+        </div>
     </div>
 </div>
 
@@ -206,10 +216,14 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 const sections = ["news", "entertainment", "lifestyle", "trending"];
+const loadedArticles = {}; // Object to track loaded articles for each section
 
 sections.forEach(section => {
     const wrapper = document.getElementById(section + 'Wrapper');
     const btn = document.querySelector(`.load-more[data-section="${section}"]`);
+
+    // Initialize loaded articles for this section
+    loadedArticles[section] = [];
 
     // Fetch data from Firebase
     function fetchArticles() {
@@ -219,6 +233,8 @@ sections.forEach(section => {
                 const articles = snapshot.val();
                 console.log("Fetched Articles:", articles); // Debugging line
                 const articleArray = Object.values(articles);
+
+                // Display only new articles
                 displayArticles(articleArray);
             } else {
                 console.log("No data available");
@@ -229,7 +245,10 @@ sections.forEach(section => {
     }
 
     function displayArticles(articles) {
-        articles.forEach(article => {
+        // Filter out already loaded articles
+        const newArticles = articles.filter(article => !loadedArticles[section].includes(article.title));
+
+        newArticles.forEach(article => {
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
@@ -244,7 +263,17 @@ sections.forEach(section => {
             card.addEventListener('click', () => {
                 openModal(article);
             });
+
+            // Add the article title to loaded articles
+            loadedArticles[section].push(article.title);
         });
+
+        // Hide the Load More button if there are no new articles
+        if (newArticles.length === 0) {
+            btn.style.display = 'none';
+        } else {
+            btn.style.display = 'block';
+        }
     }
 
     // Open modal with article content
@@ -262,6 +291,9 @@ sections.forEach(section => {
         modalSummary.textContent = article.summary;  // Set the summary
         modalFullContent.textContent = article.fullContent;  // Set the full content
 
+        // Disable background scroll
+        document.body.style.overflow = 'hidden';
+
         modal.style.display = "block";
     }
 
@@ -270,6 +302,9 @@ sections.forEach(section => {
     closeModal.onclick = function() {
         const modal = document.getElementById('articleModal');
         modal.style.display = "none";
+
+        // Enable background scroll
+        document.body.style.overflow = 'auto';
     }
 
     // Fetch articles on load
@@ -286,6 +321,9 @@ window.onclick = function(event) {
     const modal = document.getElementById('articleModal');
     if (event.target === modal) {
         modal.style.display = "none";
+
+        // Enable background scroll
+        document.body.style.overflow = 'auto';
     }
 }
 </script>
